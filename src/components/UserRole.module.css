@@ -1,0 +1,18 @@
+.admin {
+	color: lightseagreen;
+}
+.users {
+	color: rgb(35, 112, 201);
+}
+.other {
+	color: rgb(108, 28, 173);
+}
+
+.role {
+	background-color: rgba(99, 99, 99, 0.103);
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.5rem;
+}
