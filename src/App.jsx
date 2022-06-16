@@ -1,21 +1,19 @@
-import Title from './components/Title';
 import UserList from './components/UserList';
 
 const USERS = [
-	{ name: 'John', active: true, role: 'admin' },
-	{ name: 'Peter', active: false, role: 'user' },
-	{ name: 'Mary', active: true, role: 'user' },
-	{ name: 'Jane', active: false, role: 'admin' },
-	{ name: 'Jack', active: true, role: 'user' },
-	{ name: 'Jill', active: false, role: 'user' },
-	{ name: 'Joe', active: true, role: 'addsdmin' }
+	{ name: 'John Doe Fee', active: true, role: 'admin' },
+	{ name: 'Peter Grey Master', active: false, role: 'user' },
+	{ name: 'Mary Poppings T.', active: true, role: 'user' }
+	// { name: 'Jane Grey Foo', active: false, role: 'admin' },
+	// { name: 'Jack Black Doe', active: true, role: 'user' },
+	// { name: 'Jill Tatareto', active: false, role: 'user' },
+	// { name: 'Joe Gunanoe', active: true, role: 'addsdmin' }
 ];
 
 const App = () => (
-	<>
-		<Title>User List</Title>
-		<UserList users={USERS} />
-	</>
+	<UserList users={USERS}>
+		<h1>Users List</h1>
+	</UserList>
 );
 
 export default App;
