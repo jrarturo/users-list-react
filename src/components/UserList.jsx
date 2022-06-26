@@ -3,10 +3,10 @@ import style from './UserList.module.css';
 import UsersListFilter from './UsersListFilter';
 import UsersListRows from './UsersListRows';
 
-const UserList = ({ users }) => {
-	const [search, setSearch] = useState('');
-	const [onlyActive, setOnlyActive] = useState(false);
-	const [sortBy, setSortBy] = useState(0);
+const UserList = ({ initialUsers }) => {
+	const { search, onlyActive, sortBy, ...setFilteredFunctions } = useFilters();
+
+	const { users, toggleUserActive } = useUsers(initialUsers);
 
 	let usersFiltered = filterActiveUsers(users, onlyActive);
 	usersFiltered = filterUsersByName(usersFiltered, search);
@@ -17,15 +17,64 @@ const UserList = ({ users }) => {
 			<h1>Users List</h1>
 			<UsersListFilter
 				search={search}
-				setSearch={setSearch}
 				onlyActive={onlyActive}
-				setOnlyActive={setOnlyActive}
 				sortBy={sortBy}
-				setSortBy={setSortBy}
+				{...setFilteredFunctions}
 			/>
-			<UsersListRows users={usersFiltered} />
+			<UsersListRows
+				users={usersFiltered}
+				toggleUserActive={toggleUserActive}
+			/>
 		</div>
 	);
+};
+
+// Custom hook to manage users
+const useUsers = initialUsers => {
+	const [users, setUsers] = useState(initialUsers);
+
+	const toggleUserActive = userId => {
+		const newUsers = [...users];
+
+		const userIndex = newUsers.findIndex(user => user.id === userId);
+		if (userIndex === -1) return;
+
+		newUsers[userIndex].active = !newUsers[userIndex].active;
+
+		setUsers(newUsers);
+	};
+	return {
+		users,
+		toggleUserActive
+	};
+};
+
+// Custom hook to manage users filters
+const useFilters = () => {
+	const [filters, setFilters] = useState({
+		search: '',
+		onlyActive: false,
+		sortBy: 0
+	});
+
+	const setSearch = search => {
+		setFilters({ ...filters, search });
+	};
+
+	const setOnlyActive = onlyActive => {
+		setFilters({ ...filters, onlyActive });
+	};
+
+	const setSortBy = sortBy => {
+		setFilters({ ...filters, sortBy });
+	};
+
+	return {
+		...filters,
+		setSearch,
+		setOnlyActive,
+		setSortBy
+	};
 };
 
 const filterUsersByName = (users, search) => {
