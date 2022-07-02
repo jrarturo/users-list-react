@@ -1,9 +1,5 @@
 .form {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-
-	padding: 1rem;
+	margin: 1.5rem 0;
 }
 
 .active {
@@ -11,9 +7,13 @@
 	align-items: center;
 }
 
-.active input[type='checkbox'] {
-	height: 1rem;
-	width: 1rem;
+.checkbox {
+	margin-right: 0.75rem;
+}
 
-	margin-right: 0.5rem;
+.row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
 }

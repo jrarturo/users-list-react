@@ -14,7 +14,7 @@ const UserList = ({ initialUsers }) => {
 
 	return (
 		<div className={style.list}>
-			<h1>Users List</h1>
+			<h1 className={style.title}>Users List</h1>
 			<UsersListFilter
 				search={search}
 				onlyActive={onlyActive}
@@ -24,15 +24,6 @@ const UserList = ({ initialUsers }) => {
 			<UsersListRows users={usersFiltered} />
 		</div>
 	);
-};
-
-// Custom hook to manage users
-const useUsers = initialUsers => {
-	const [users, setUsers] = useState(initialUsers);
-
-	return {
-		users
-	};
 };
 
 // Custom hook to manage users filters
@@ -48,7 +39,11 @@ const useFilters = () => {
 	};
 
 	const setOnlyActive = onlyActive => {
-		setFilters({ ...filters, onlyActive });
+		if (onlyActive && filters.sortBy === 3) {
+			setFilters({ ...filters, sortBy: 0, onlyActive });
+		} else {
+			setFilters({ ...filters, onlyActive });
+		}
 	};
 
 	const setSortBy = sortBy => {
@@ -63,21 +58,34 @@ const useFilters = () => {
 	};
 };
 
+// Custom hook to manage users
+const useUsers = initialUsers => {
+	const [users, setUsers] = useState(initialUsers);
+
+	return {
+		users
+	};
+};
+
+// Custom hook to manage users filter by name
 const filterUsersByName = (users, search) => {
 	if (!search) return [...users];
 
 	const lowerCaseSearch = search.toLocaleLowerCase();
 
 	return users.filter(user =>
-		user.name.toLowerCase().startsWith(lowerCaseSearch)
+		user.name.toLowerCase().includes(lowerCaseSearch)
 	);
 };
+
+// Custom hook to manage users filter by active
 const filterActiveUsers = (users, active) => {
 	if (!active) return [...users];
 
 	return users.filter(user => user.active);
 };
 
+// Custom hook to sort users
 const sortUsers = (users, sortBy) => {
 	const sortedUsers = [...users];
 	switch (sortBy) {
@@ -86,6 +94,20 @@ const sortUsers = (users, sortBy) => {
 				if (a.name > b.name) return 1;
 				if (a.name < b.name) return -1;
 				return 0;
+			});
+		case 2:
+			return sortedUsers.sort((a, b) => {
+				if (a.role === b.role) return 0;
+				if (a.role === 'manager') return -1;
+				if (a.role === 'user' && b.role === 'admin') return -1;
+				return 1;
+			});
+
+		case 3:
+			return sortedUsers.sort((a, b) => {
+				if (a.active === b.active) return 0;
+				if (a.active && !b.active) return -1;
+				return 1;
 			});
 		default:
 			return sortedUsers;

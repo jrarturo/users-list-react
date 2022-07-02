@@ -7,7 +7,7 @@ const USERS = [
 	{ username: 'jane', name: 'Jane Grey Foo', active: false, role: 'admin' },
 	{ username: 'jack', name: 'Jack Black Doe', active: true, role: 'user' },
 	{ username: 'jill', name: 'Jill Tatareto', active: false, role: 'user' },
-	{ username: 'joe', name: 'Joe Gunanoe', active: true, role: 'addsdmin' }
+	{ username: 'joe', name: 'Joe Gunanoe', active: true, role: 'manager' }
 ];
 
 const App = () => <UserList initialUsers={USERS} />;

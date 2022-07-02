@@ -5,4 +5,5 @@
 .username {
 	font-size: var(--text-sm);
 	color: var(--color-gray);
+	margin-top: 0.25rem;
 }
