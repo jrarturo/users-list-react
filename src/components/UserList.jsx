@@ -1,46 +1,62 @@
-import { useState } from 'react';
-import { useFilters } from '../lib/hooks/useFilters';
+import { paginateUsers, useFilters } from '../lib/hooks/useFilters';
 import {
 	filterActiveUsers,
 	filterUsersByName,
 	sortUsers
 } from '../lib/users/filterUsers';
 import style from './UserList.module.css';
+import UserListPagination from './UserListPagination';
 import UsersListFilter from './UsersListFilter';
 import UsersListRows from './UsersListRows';
 
 const UserList = ({ initialUsers }) => {
-	const { search, onlyActive, sortBy, ...setFilteredFunctions } = useFilters();
+	const {
+		filters,
+		setSearch,
+		setOnlyActive,
+		setSortBy,
+		setPage,
+		setItemsPerPage
+	} = useFilters();
 
-	const { users } = useUsers(initialUsers);
-
-	let usersFiltered = filterActiveUsers(users, onlyActive);
-	usersFiltered = filterUsersByName(usersFiltered, search);
-	usersFiltered = sortUsers(usersFiltered, sortBy);
+	const { users, totalPages } = getUsers(initialUsers, filters);
 
 	return (
 		<div className={style.list}>
 			<h1 className={style.title}>Users List</h1>
 			<UsersListFilter
-				search={search}
-				onlyActive={onlyActive}
-				sortBy={sortBy}
-				{...setFilteredFunctions}
+				search={filters.search}
+				onlyActive={filters.onlyActive}
+				sortBy={filters.sortBy}
+				setSearch={setSearch}
+				setOnlyActive={setOnlyActive}
+				setSortBy={setSortBy}
 			/>
-			<UsersListRows users={usersFiltered} />
+			<UsersListRows users={users} />
+			<UserListPagination
+				page={filters.page}
+				itemPerPage={filters.itemsPerPage}
+				setPage={setPage}
+				setItemsPerPage={setItemsPerPage}
+				totalPages={totalPages}
+			></UserListPagination>
 		</div>
 	);
 };
 
-// Custom hook to manage users filters
+const getUsers = (
+	initialUsers,
+	{ search, onlyActive, sortBy, page, itemsPerPage }
+) => {
+	let usersFiltered = filterActiveUsers(initialUsers, onlyActive);
+	usersFiltered = filterUsersByName(usersFiltered, search);
+	usersFiltered = sortUsers(usersFiltered, sortBy);
 
-// Custom hook to manage users
-const useUsers = initialUsers => {
-	const [users, setUsers] = useState(initialUsers);
+	const totalPages = Math.ceil(usersFiltered.length / itemsPerPage);
 
-	return {
-		users
-	};
+	usersFiltered = paginateUsers(usersFiltered, page, itemsPerPage);
+
+	return { users: usersFiltered, totalPages };
 };
 
 export default UserList;

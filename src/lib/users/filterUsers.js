@@ -1,5 +1,6 @@
 import { SORT_OPTIONS } from '../../constants/sortOptions';
 import { USER_ROLES } from '../../constants/userRoles';
+// Custom hook to manage users filters
 
 // Custom hook to manage users filter by name
 export const filterUsersByName = (users, search) => {
