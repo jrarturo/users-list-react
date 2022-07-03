@@ -8,7 +8,7 @@
 		"preview": "vite preview",
 		"format": "prettier --write .",
 		"lint": "npx eslint . --ext .js,.jsx --fix",
-		"server": "json-server --watch ./users.json --port 6000"
+		"server": "json-server ./users.json -p 4000"
 	},
 	"dependencies": {
 		"react": "^18.0.0",
