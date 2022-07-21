@@ -1,6 +1,5 @@
 import { SORT_OPTIONS } from '../../constants/sortOptions';
 import { USER_ROLES } from '../../constants/userRoles';
-// Custom hook to manage users filters
 
 // Custom hook to manage users filter by name
 export const filterUsersByName = (users, search) => {
@@ -48,4 +47,12 @@ export const sortUsers = (users, sortBy) => {
 		default:
 			return sortedUsers;
 	}
+};
+
+export const paginateUsers = (users, page, itemsPerPage) => {
+	const startIndex = (page - 1) * itemsPerPage;
+	const totalPages = Math.ceil(users.length / itemsPerPage);
+	const paginatedUsers = users.slice(startIndex, startIndex + itemsPerPage);
+
+	return { paginatedUsers, totalPages };
 };

@@ -7,7 +7,7 @@ export const useFilters = () => {
 		onlyActive: false,
 		sortBy: SORT_OPTIONS.DEFAULT,
 		page: 1,
-		itemsPerPage: 3
+		itemsPerPage: 6
 	});
 
 	const setSearch = search => {
@@ -32,7 +32,7 @@ export const useFilters = () => {
 	};
 
 	const setSortBy = sortBy => {
-		setFilters({ ...filters, sortBy });
+		setFilters({ ...filters, page: 1, sortBy });
 	};
 
 	const setPage = newPage => {
@@ -40,7 +40,7 @@ export const useFilters = () => {
 	};
 
 	const setItemsPerPage = newItemsPerPage => {
-		setFilters({ ...filters, itemsPerPage: newItemsPerPage });
+		setFilters({ ...filters, page: 1, itemsPerPage: newItemsPerPage });
 	};
 
 	return {
@@ -51,9 +51,4 @@ export const useFilters = () => {
 		setPage,
 		setItemsPerPage
 	};
-};
-
-export const paginateUsers = (users, page, itemsPerPage) => {
-	const startIndex = (page - 1) * itemsPerPage;
-	return users.slice(startIndex, startIndex + itemsPerPage);
 };

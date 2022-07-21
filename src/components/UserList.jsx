@@ -1,10 +1,5 @@
-import { useState } from 'react';
-import { paginateUsers, useFilters } from '../lib/hooks/useFilters';
-import {
-	filterActiveUsers,
-	filterUsersByName,
-	sortUsers
-} from '../lib/users/filterUsers';
+import { useFilters } from '../lib/hooks/useFilters';
+import { UseUsers } from '../lib/hooks/useUsers';
 import style from './UserList.module.css';
 import UserListPagination from './UserListPagination';
 import UsersListFilter from './UsersListFilter';
@@ -20,7 +15,7 @@ const UserList = () => {
 		setItemsPerPage
 	} = useFilters();
 
-	const { users, totalPages } = UseUsers(filters);
+	const { users, totalPages, error, loading } = UseUsers(filters);
 
 	return (
 		<div className={style.list}>
@@ -33,7 +28,7 @@ const UserList = () => {
 				setOnlyActive={setOnlyActive}
 				setSortBy={setSortBy}
 			/>
-			<UsersListRows users={users} />
+			<UsersListRows users={users} error={error} loading={loading} />
 			<UserListPagination
 				page={filters.page}
 				itemPerPage={filters.itemsPerPage}
@@ -43,20 +38,6 @@ const UserList = () => {
 			></UserListPagination>
 		</div>
 	);
-};
-
-const UseUsers = ({ search, onlyActive, sortBy, page, itemsPerPage }) => {
-	const [users, setUsers] = useState([]);
-
-	let usersFiltered = filterActiveUsers(users, onlyActive);
-	usersFiltered = filterUsersByName(usersFiltered, search);
-	usersFiltered = sortUsers(usersFiltered, sortBy);
-
-	const totalPages = Math.ceil(usersFiltered.length / itemsPerPage);
-
-	usersFiltered = paginateUsers(usersFiltered, page, itemsPerPage);
-
-	return { users: usersFiltered, totalPages };
 };
 
 export default UserList;
