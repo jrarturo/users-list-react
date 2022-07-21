@@ -8,7 +8,7 @@ const KIND_CLASSNAME = {
 const Button = ({ kind = 'primary', className, ...props }) => (
 	<button
 		{...props}
-		className={`${style.button} ${KIND_CLASSNAME[kind]} ${className}`}
+		className={`${style.button} ${KIND_CLASSNAME[kind]} ${className || ''}`}
 	></button>
 );
 
